@@ -1,20 +1,10 @@
-import {
-  SET_USERNAME,
-  ADD_TO_CART,
-  REMOVE_FROM_CART,
-} from './actionTypes';
+import { setUsername } from './user';
+import { addToCart, removeFromCart } from './cart';
+import { fetchProducts } from './products';
 
-export const setUsername = (username) => ({
-  type: SET_USERNAME,
-  payload: username,
-});
-
-export const addToCart = (product) => ({
-  type: ADD_TO_CART,
-  payload: product,
-});
-
-export const removeFromCart = (productId) => ({
-  type: REMOVE_FROM_CART,
-  payload: productId,
-});
+export {
+  setUsername,
+  addToCart,
+  removeFromCart,
+  fetchProducts,
+};

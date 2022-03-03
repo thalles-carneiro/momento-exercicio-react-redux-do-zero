@@ -1,32 +1,43 @@
 import React, { Component } from 'react';
 
 import { Header, ProductCard } from '../components';
-import getProducts from '../services/getProducts';
+
+import { connect } from 'react-redux';
+import { fetchProducts } from '../redux/actions';
 
 export class Products extends Component {
-  state = {
-    products: [],
-  }
-
   async componentDidMount() {
-    const products = await getProducts('computador');
-    this.setState({ products });
+    const { fetchProductsDispatch } = this.props;
+    await fetchProductsDispatch('computador');
   }
 
   render() {
-    const { products } = this.state;
+    const { isFetching, products } = this.props;
+
+    if (isFetching) return <p>Loading...</p>
 
     return (
       <section>
         <Header />
         <section>
-          { products.map((product) => (
-            <ProductCard key={ product.id } { ...product } />
-          )) }
+          {
+            products.map((product) => (
+              <ProductCard key={ product.id } { ...product } />
+            ))
+          }
         </section>
       </section>
     );
   }
 }
 
-export default Products;
+const mapStateToProps = (state) => ({
+  isFetching: state.products.isFetching,
+  products: state.products.products,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  fetchProductsDispatch: (query) => dispatch(fetchProducts(query)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Products);
